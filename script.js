@@ -1,4 +1,6 @@
 
+let list = [];
+
 const getData = async (country,type) => {
     const response = await fetch(`https://corona.lmao.ninja/v2/historical/${country.toLowerCase()}`)
     const json = await response.json();
@@ -59,8 +61,15 @@ const getData = async (country,type) => {
     
 }
 
-window.addEventListener('load',()=> {
-    document.getElementById('country').value = ""
+window.addEventListener('load',async ()=> {
+    document.getElementById('country').value = "";
+    const data = await fetch('https://corona.lmao.ninja/v2/historical')
+    const res = await data.json();
+    res.forEach(country => {
+        list.push(country.country);
+    })
+    
+    list = [...new Set(list)];
 })
 
 
@@ -78,4 +87,26 @@ btnSrch.addEventListener('click',async ()=> {
     }
     
      
+})
+
+
+document.getElementById('country').addEventListener('keyup', (e) => {
+    
+    const datalist = document.getElementById("countries");
+    datalist.innerHTML = '';
+
+    const value = e.target.value;
+    const searchRes = list.filter(country => {
+        return country.toLowerCase().startsWith(value);
+    })
+
+    searchRes.forEach(country => {
+        const option = document.createElement("option");
+        option.value = country;
+        datalist.appendChild(option);
+    })
+
+    if(e.target.value === '') {
+        datalist.innerHTML = '';
+    }
 })
