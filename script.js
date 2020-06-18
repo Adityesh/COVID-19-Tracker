@@ -75,7 +75,7 @@ window.addEventListener('load',async ()=> {
 
 let btnSrch = document.getElementById('btnSrch')
 btnSrch.addEventListener('click',async ()=> {
-    let country = document.getElementById('country').value
+    let country = document.getElementById('country').value.toLowerCase();
     const response = await fetch(`https://corona.lmao.ninja/v2/historical/${country.toLowerCase()}`)
     const json = await response.json()
     let err = Object.values(json)[0]
